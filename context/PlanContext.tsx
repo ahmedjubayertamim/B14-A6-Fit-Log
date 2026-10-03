@@ -11,26 +11,27 @@ import {
 import { Workout } from "@/types";
 
 
-
 interface PlanContextType {
 
   plan: Workout[];
 
   saved: Workout[];
 
+  toast: string;
+
   addToPlan: (workout: Workout) => void;
 
   saveWorkout: (workout: Workout) => void;
 
-  removeFromPlan: (id:number)=>void;
+  removeFromPlan: (id:number|string)=>void;
 
-  removeFromSaved:(id:number)=>void;
+  removeFromSaved:(id:number|string)=>void;
 
-  markDone:(id:number)=>void;
+  markDone:(id:number|string)=>void;
+
+  showToast:(message:string)=>void;
 
 }
-
-
 
 
 
@@ -52,10 +53,13 @@ export function PlanProvider({
 
   const [saved,setSaved] = useState<Workout[]>([]);
 
+  const [toast,setToast] = useState("");
 
 
 
-  // Load data from localStorage
+
+
+  // Load localStorage
 
   useEffect(()=>{
 
@@ -76,7 +80,6 @@ export function PlanProvider({
     }
 
 
-
     if(savedWorkout){
 
       setSaved(JSON.parse(savedWorkout));
@@ -84,8 +87,8 @@ export function PlanProvider({
     }
 
 
-
   },[]);
+
 
 
 
@@ -108,18 +111,37 @@ export function PlanProvider({
 
 
 
+
   // Save saved list
 
   useEffect(()=>{
-
 
     localStorage.setItem(
       "fitlog-saved",
       JSON.stringify(saved)
     );
 
-
   },[saved]);
+
+
+
+
+
+
+
+  function showToast(message:string){
+
+    setToast(message);
+
+
+    setTimeout(()=>{
+
+      setToast("");
+
+    },2000);
+
+  }
+
 
 
 
@@ -132,33 +154,59 @@ export function PlanProvider({
   function addToPlan(workout:Workout){
 
 
-    // maximum 5 lifts
-
-    if(plan.length >= 5){
-
-      return;
-
-    }
+    setPlan((previous)=>{
 
 
+      if(previous.length >= 5){
 
-    const exists =
-      plan.some(
-        item=>item.id===workout.id
+        showToast(
+          "Maximum 5 workouts allowed"
+        );
+
+        return previous;
+
+      }
+
+
+
+      const exists =
+        previous.some(
+          item =>
+          String(item.id) === String(workout.id)
+        );
+
+
+
+      if(exists){
+
+        showToast(
+          "Already added to plan"
+        );
+
+        return previous;
+
+      }
+
+
+
+      showToast(
+        "Added to today's plan"
       );
 
 
-    if(!exists){
 
-      setPlan([
-        ...plan,
+      return [
+        ...previous,
         workout
-      ]);
+      ];
 
-    }
+
+    });
 
 
   }
+
+
 
 
 
@@ -171,20 +219,42 @@ export function PlanProvider({
   function saveWorkout(workout:Workout){
 
 
-    const exists =
-      saved.some(
-        item=>item.id===workout.id
+    setSaved((previous)=>{
+
+
+      const exists =
+        previous.some(
+          item =>
+          String(item.id) === String(workout.id)
+        );
+
+
+
+      if(exists){
+
+        showToast(
+          "Already saved"
+        );
+
+        return previous;
+
+      }
+
+
+
+      showToast(
+        "Saved successfully"
       );
 
 
-    if(!exists){
 
-      setSaved([
-        ...saved,
+      return [
+        ...previous,
         workout
-      ]);
+      ];
 
-    }
+
+    });
 
 
   }
@@ -195,15 +265,22 @@ export function PlanProvider({
 
 
 
-  // Remove plan item
 
-  function removeFromPlan(id:number){
+  function removeFromPlan(id:number|string){
 
 
-    setPlan(
-      plan.filter(
-        item=>item.id!==id
+    setPlan((previous)=>
+
+      previous.filter(
+        item =>
+        String(item.id)!==String(id)
       )
+
+    );
+
+
+    showToast(
+      "Workout removed"
     );
 
 
@@ -215,15 +292,22 @@ export function PlanProvider({
 
 
 
-  // Remove saved item
 
-  function removeFromSaved(id:number){
+  function removeFromSaved(id:number|string){
 
 
-    setSaved(
-      saved.filter(
-        item=>item.id!==id
+    setSaved((previous)=>
+
+      previous.filter(
+        item =>
+        String(item.id)!==String(id)
       )
+
+    );
+
+
+    showToast(
+      "Saved workout removed"
     );
 
 
@@ -235,15 +319,22 @@ export function PlanProvider({
 
 
 
-  // Mark as done
 
-  function markDone(id:number){
+  function markDone(id:number|string){
 
 
-    setPlan(
-      plan.filter(
-        item=>item.id!==id
+    setPlan((previous)=>
+
+      previous.filter(
+        item =>
+        String(item.id)!==String(id)
       )
+
+    );
+
+
+    showToast(
+      "Workout marked as done"
     );
 
 
@@ -265,6 +356,8 @@ export function PlanProvider({
 
         saved,
 
+        toast,
+
         addToPlan,
 
         saveWorkout,
@@ -275,6 +368,8 @@ export function PlanProvider({
 
         markDone,
 
+        showToast,
+
       }}
 
     >
@@ -284,7 +379,6 @@ export function PlanProvider({
     </PlanContext.Provider>
 
   );
-
 
 }
 
