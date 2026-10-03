@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getWorkoutById } from "@/utils/api";
 import { ArrowLeft, Dumbbell } from "lucide-react";
+import WorkoutActions from "@/components/WorkoutActions";
 
 
 export default async function WorkoutDetails({
@@ -337,47 +338,7 @@ export default async function WorkoutDetails({
 
             {/* Buttons */}
 
-            <div className="
-              flex
-              flex-wrap
-              gap-4
-              mt-10
-            ">
-
-
-              <button
-                className="
-                  btn
-                  btn-primary
-                  text-black
-                  font-bold
-                "
-              >
-
-                <Dumbbell size={18}/>
-
-                Add to today's plan
-
-              </button>
-
-
-
-
-
-              <button
-                className="
-                  btn
-                  btn-outline
-                "
-              >
-
-                Save for later
-
-              </button>
-
-
-
-            </div>
+            <WorkoutActions workout={workout}/>
 
 
 
