@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { PlanProvider } from "@/context/PlanContext";
 
 
 export const metadata: Metadata = {
@@ -9,23 +10,33 @@ export const metadata: Metadata = {
 };
 
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
 
+
   return (
+
     <html lang="en">
 
       <body>
 
-        <Navbar />
+        <PlanProvider>
 
-        {children}
+          <Navbar />
+
+          {children}
+
+        </PlanProvider>
+
 
       </body>
 
     </html>
+
   );
+
 }
