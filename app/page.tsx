@@ -1,30 +1,19 @@
 import Hero from "@/components/Hero";
+import LibrarySection from "@/components/LibrarySection";
 
-export default function Home() {
 
-  return (
-    <main>
+export default function Home(){
 
-      <Hero />
+return(
 
-      <section
-        id="library"
-        className="
-          min-h-screen
-          bg-black
-          text-white
-          flex
-          items-center
-          justify-center
-        "
-      >
+<main>
 
-        <h2 className="text-4xl font-bold">
-          THE LIBRARY
-        </h2>
+<Hero />
 
-      </section>
+<LibrarySection />
 
-    </main>
-  );
+</main>
+
+)
+
 }
