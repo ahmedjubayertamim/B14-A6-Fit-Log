@@ -5,27 +5,29 @@ const API_URL =
   "https://api.abcz.workers.dev/api/fitlog";
 
 
+// Get all workouts
 
 export async function getAllWorkouts(): Promise<Workout[]> {
 
   const res = await fetch(API_URL);
+
 
   if (!res.ok) {
     throw new Error("Failed to fetch workouts");
   }
 
 
-  const data = await res.json();
-
-  return data;
+  return res.json();
 
 }
 
 
 
+// Get single workout
+
 export async function getWorkoutById(
   id: string
-): Promise<Workout> {
+): Promise<Workout | null> {
 
 
   const res = await fetch(
@@ -34,13 +36,10 @@ export async function getWorkoutById(
 
 
   if (!res.ok) {
-    throw new Error("Failed to fetch workout");
+    return null;
   }
 
 
-  const data = await res.json();
-
-
-  return data;
+  return res.json();
 
 }

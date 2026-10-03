@@ -1,11 +1,14 @@
-import type { NextConfig } from "next";
+const nextConfig = {
 
-const nextConfig: NextConfig = {
-  images: {
-    domains: [
-      "img.magnific.com",
-    ],
-  },
+ images:{
+  remotePatterns:[
+   {
+    protocol:"https",
+    hostname:"img.magnific.com",
+   },
+  ],
+ },
+
 };
 
 export default nextConfig;
