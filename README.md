@@ -255,16 +255,6 @@ The layout automatically adapts using responsive Tailwind CSS classes.
 
 **Project Name:** B14-A6-Fit Log
 
-## Submission Deadlines
-
-| Marks | Deadline |
-|---|---|
-| 60 Marks | 26 September 2026, 11:59 PM |
-| 50 Marks | 27 September 2026, 11:59 PM |
-| 30 Marks | After 27 September 2026 |
-
----
-
 # 👨‍💻 Author
 
 **Ahmed Jubayer Tamim**
