@@ -1,5 +1,6 @@
 "use client";
 
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,7 +8,6 @@ import {
 Clock,
 Flame,
 Star,
-Check,
 X
 } from "lucide-react";
 
@@ -17,7 +17,7 @@ import { usePlan } from "@/context/PlanContext";
 
 
 
-export default function PlanCard({
+export default function SavedCard({
 workout
 }:{
 workout:Workout;
@@ -25,8 +25,7 @@ workout:Workout;
 
 
 const {
-removeFromPlan,
-markDone
+removeFromSaved
 }=usePlan();
 
 
@@ -59,6 +58,7 @@ className="
 rounded-xl
 object-cover
 "
+
 />
 
 
@@ -78,10 +78,9 @@ uppercase
 </h3>
 
 
-
 <p className="
-text-sm
 text-gray-400
+text-sm
 ">
 
 {workout.equipment}
@@ -94,26 +93,25 @@ text-gray-400
 flex
 gap-4
 text-xs
-text-gray-300
 mt-2
 ">
 
 
 <span>
-<Clock size={14} className="inline text-[#ccff00]"/>
- {workout.duration} min
+<Clock size={14}/>
+{workout.duration} min
 </span>
 
 
 <span>
-<Flame size={14} className="inline text-[#ccff00]"/>
- {workout.caloriesBurned} kcal
+<Flame size={14}/>
+{workout.caloriesBurned} kcal
 </span>
 
 
 <span>
-<Star size={14} className="inline text-[#ccff00]"/>
- {workout.rating}
+<Star size={14}/>
+{workout.rating}
 </span>
 
 
@@ -121,8 +119,6 @@ mt-2
 
 
 </div>
-
-
 
 
 
@@ -147,31 +143,7 @@ View Details
 <button
 
 onClick={()=>
-markDone(workout.id)
-}
-
-className="
-btn
-btn-sm
-bg-[#ccff00]
-text-black
-border-none
-"
-
->
-
-<Check size={15}/>
-
-Mark as Done
-
-</button>
-
-
-
-<button
-
-onClick={()=>
-removeFromPlan(workout.id)
+removeFromSaved(workout.id)
 }
 
 className="

@@ -1,256 +1,265 @@
 "use client";
 
+
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Dumbbell } from "lucide-react";
 
+
 import { usePlan } from "@/context/PlanContext";
 
 
-export default function Navbar() {
 
+export default function Navbar(){
 
-  const pathname = usePathname();
 
+const pathname = usePathname();
 
-  const {
-    plan,
-    saved
-  } = usePlan();
 
+const {
+plan,
+saved
+}=usePlan();
 
 
 
-  return (
 
-    <header className="
-      w-full
-      bg-black
-      text-white
-      border-b
-      border-white/10
-    ">
+return (
 
+<header className="
+bg-black
+text-white
+border-b
+border-white/10
+">
 
-      <div className="
-        max-w-7xl
-        mx-auto
-        flex
-        items-center
-        justify-between
-        px-6
-        py-4
-      ">
 
+<div className="
+max-w-6xl
+mx-auto
+px-6
+py-4
+flex
+items-center
+justify-between
+">
 
 
-        {/* Logo */}
 
-        <Link
-          href="/"
-          className="
-            flex
-            items-center
-            gap-3
-          "
-        >
+{/* LOGO */}
 
+<Link
 
-          <Image
+href="/"
 
-            src="/images/logo.png"
+className="
+flex
+items-center
+gap-3
+"
 
-            alt="FitLog Logo"
+>
 
-            width={40}
 
-            height={40}
+<Image
 
-            className="object-contain"
+src="/images/logo.png"
 
-          />
+alt="FitLog"
 
+width={32}
 
+height={32}
 
-          <span className="
-            text-xl
-            font-bold
-            tracking-widest
-          ">
+/>
 
-            FITLOG
 
-          </span>
+<span className="
+font-black
+tracking-widest
+text-xl
+">
 
+FITLOG
 
-        </Link>
+</span>
 
 
+</Link>
 
 
 
 
 
-        {/* Navigation */}
+{/* NAVIGATION */}
 
-        <nav className="
-          hidden
-          md:flex
-          items-center
-          gap-6
-        ">
 
+<nav className="
+hidden
+md:flex
+items-center
+gap-5
+">
 
-          <Link
 
-            href="/"
+<Link
 
-            className={`
-              px-5
-              py-2
-              rounded-full
-              transition
+href="/"
 
-              ${
-                pathname === "/"
-                ?
-                "bg-[#ccff00] text-black font-bold"
-                :
-                "text-gray-300 hover:text-white"
-              }
+className={`
 
-            `}
+px-5
+py-2
+rounded-full
+text-sm
+font-bold
 
-          >
+${
+pathname==="/"
 
-            Workout
+?
 
-          </Link>
+"bg-[#ccff00] text-black"
 
+:
 
+"text-gray-400 hover:text-white"
 
+}
 
+`}
 
+>
 
-          <Link
+Workouts
 
-            href="/my-plan"
+</Link>
 
-            className={`
-              px-5
-              py-2
-              rounded-full
-              transition
 
-              ${
-                pathname === "/my-plan"
-                ?
-                "bg-[#ccff00] text-black font-bold"
-                :
-                "text-gray-300 hover:text-white"
-              }
 
-            `}
+<Link
 
-          >
+href="/my-plan"
 
-            My Plan
+className={`
 
-          </Link>
+px-5
+py-2
+rounded-full
+text-sm
+font-bold
 
 
+${
+pathname==="/my-plan"
 
-        </nav>
+?
 
+"bg-[#ccff00] text-black"
 
+:
 
+"text-gray-400 hover:text-white"
 
+}
 
+`}
 
+>
 
+My Plan
 
+</Link>
 
-        {/* Counters */}
 
-        <div className="
-          flex
-          items-center
-          gap-3
-        ">
+</nav>
 
 
 
-          <Link href="/my-plan">
 
 
-            <div className="
-              flex
-              items-center
-              gap-2
-              bg-[#ccff00]
-              text-black
-              px-4
-              py-2
-              rounded-full
-              text-sm
-              font-bold
-              whitespace-nowrap
-            ">
 
 
-              <Dumbbell size={16}/>
+{/* COUNTERS */}
 
 
-              Plan {plan.length}
+<div className="
+flex
+items-center
+gap-3
+">
 
 
-            </div>
 
+<Link href="/my-plan">
 
-          </Link>
 
+<div className="
+flex
+items-center
+gap-2
+bg-[#ccff00]
+text-black
+px-4
+py-2
+rounded-full
+text-sm
+font-bold
+">
 
 
+<Dumbbell size={15}/>
 
 
+Plan {plan.length}
 
 
-          <Link href="/my-plan">
+</div>
 
 
-            <div className="
-              px-4
-              py-2
-              rounded-full
-              border
-              border-white/30
-              text-sm
-              font-semibold
-              whitespace-nowrap
-            ">
+</Link>
 
 
-              Saved {saved.length}
 
 
-            </div>
 
 
-          </Link>
+<Link href="/my-plan">
 
 
+<div className="
+px-4
+py-2
+rounded-full
+border
+border-white/30
+text-sm
+font-bold
+">
 
-        </div>
 
+Saved {saved.length}
 
 
-      </div>
+</div>
 
 
+</Link>
 
-    </header>
 
-  );
+
+
+</div>
+
+
+
+
+</div>
+
+
+</header>
+
+)
 
 }

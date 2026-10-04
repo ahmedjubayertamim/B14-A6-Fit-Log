@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  startTransition,
   useContext,
   useEffect,
   useState,
@@ -33,6 +34,53 @@ interface PlanContextType {
 
 }
 
+function isWorkout(value: unknown): value is Workout {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const workout = value as Record<string, unknown>;
+
+  return (
+    (typeof workout.id === "number" ||
+      (typeof workout.id === "string" && workout.id.trim() !== "")) &&
+    Number.isFinite(Number(workout.id)) &&
+    typeof workout.name === "string" &&
+    typeof workout.image === "string" &&
+    Array.isArray(workout.muscleGroups) &&
+    typeof workout.equipment === "string" &&
+    typeof workout.difficulty === "string" &&
+    typeof workout.duration === "number" &&
+    typeof workout.caloriesBurned === "number" &&
+    typeof workout.sets === "number" &&
+    typeof workout.reps === "string" &&
+    typeof workout.rating === "number" &&
+    typeof workout.description === "string" &&
+    Array.isArray(workout.instructions)
+  );
+}
+
+function readWorkouts(key: string): Workout[] {
+  const stored = localStorage.getItem(key);
+
+  if (!stored) {
+    return [];
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(stored);
+
+    return Array.isArray(parsed)
+      ? parsed.filter(isWorkout).map((workout) => ({
+          ...workout,
+          id: Number(workout.id),
+        }))
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 
 
 const PlanContext =
@@ -55,6 +103,7 @@ export function PlanProvider({
 
   const [toast,setToast] = useState("");
 
+  const [hydrated,setHydrated] = useState(false);
 
 
 
@@ -64,27 +113,11 @@ export function PlanProvider({
   useEffect(()=>{
 
 
-    const savedPlan =
-      localStorage.getItem("fitlog-plan");
-
-
-    const savedWorkout =
-      localStorage.getItem("fitlog-saved");
-
-
-
-    if(savedPlan){
-
-      setPlan(JSON.parse(savedPlan));
-
-    }
-
-
-    if(savedWorkout){
-
-      setSaved(JSON.parse(savedWorkout));
-
-    }
+    startTransition(() => {
+      setPlan(readWorkouts("fitlog-plan"));
+      setSaved(readWorkouts("fitlog-saved"));
+      setHydrated(true);
+    });
 
 
   },[]);
@@ -99,12 +132,16 @@ export function PlanProvider({
 
   useEffect(()=>{
 
+    if(!hydrated){
+      return;
+    }
+
     localStorage.setItem(
       "fitlog-plan",
       JSON.stringify(plan)
     );
 
-  },[plan]);
+  },[plan, hydrated]);
 
 
 
@@ -116,12 +153,16 @@ export function PlanProvider({
 
   useEffect(()=>{
 
+    if(!hydrated){
+      return;
+    }
+
     localStorage.setItem(
       "fitlog-saved",
       JSON.stringify(saved)
     );
 
-  },[saved]);
+  },[saved, hydrated]);
 
 
 

@@ -29,9 +29,13 @@ export async function getWorkoutById(
   id: string
 ): Promise<Workout | null> {
 
+  const workoutId = id.trim();
 
   const res = await fetch(
-    `${API_URL}/${id}`
+    `${API_URL}/${encodeURIComponent(workoutId)}`,
+    {
+      cache: "no-store",
+    }
   );
 
 
